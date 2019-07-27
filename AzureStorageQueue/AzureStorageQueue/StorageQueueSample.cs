@@ -9,9 +9,9 @@ namespace AzureStorageQueue
     public class StorageQueueSample
     {
         private readonly AppOptions _appOptions;
-/*
+
         private const string QueueName = "samplequeue";
-*/
+
 
         public StorageQueueSample()
         {
@@ -24,9 +24,14 @@ namespace AzureStorageQueue
         }
         public static async Task Run()
         {
-
+            var connectionString = new StorageQueueSample()._appOptions.ConnectionString;
 
             await CreateQueue();
+
+            var queueClient = GetQueueClient(connectionString);
+            CloudQueue queue = queueClient.GetQueueReference(QueueName);
+            await queue.AddMessageAsync(new CloudQueueMessage("Hello World"));
+
 
 
             Console.WriteLine("Press a key to exit.");
@@ -56,7 +61,7 @@ namespace AzureStorageQueue
 
         public static CloudQueueClient GetQueueClient(string connectionString)
         {
-      
+
             CloudStorageAccount account = CloudStorageAccount.Parse(connectionString);
             CloudQueueClient client = account.CreateCloudQueueClient();
             return client;
