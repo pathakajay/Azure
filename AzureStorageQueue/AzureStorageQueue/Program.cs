@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Extensions.Configuration;
 
 namespace AzureStorageQueue
 {
@@ -6,6 +7,8 @@ namespace AzureStorageQueue
     {
         static void Main(string[] args)
         {
+            var builder = new ConfigurationBuilder();
+            builder.AddJsonFile("appsettings.json", true, true);
             StorageQueueSample.Run().GetAwaiter().GetResult();
 
         }
